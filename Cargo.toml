@@ -1,0 +1,10 @@
+[package]
+name = "lyn"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+clap = { version = "4.5.2", features = ["derive"] }
+crossterm = "0.27.0"
+ratatui = "0.26.1"
+tui-textarea = "0.4.0"

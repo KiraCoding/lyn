@@ -5,8 +5,8 @@ use crossterm::execute;
 use crossterm::terminal::{disable_raw_mode, enable_raw_mode};
 use crossterm::terminal::{EnterAlternateScreen, LeaveAlternateScreen};
 use ratatui::backend::CrosstermBackend;
-use ratatui::widgets::Widget;
 use ratatui::prelude::*;
+use ratatui::widgets::Widget;
 use std::io::{stdout, Result, Stdout};
 use std::path::PathBuf;
 use tui_textarea::{Input, Key};
@@ -65,6 +65,11 @@ impl<'a> App<'a> {
 
             match read()?.into() {
                 Input { key: Key::Esc, .. } => break,
+                Input {
+                    key: Key::Char('q'),
+                    ctrl: true,
+                    ..
+                } => break,
                 Input {
                     key: Key::Char('s'),
                     ctrl: true,

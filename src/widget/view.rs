@@ -12,20 +12,26 @@ pub struct View<'v> {
 
 impl<'v> View<'v> {
     pub fn new(path: PathBuf) -> Result<Self> {
-        if !path.metadata()?.is_file() {
-            return Err(Error::new(
-                ErrorKind::Other,
-                format!("{:?} is not a file", path),
-            ));
-        }
+        let mut textarea = if let Ok(metadata) = path.metadata() {
+            if metadata.is_file() {
+                let mut textarea = BufReader::new(File::open(&path)?)
+                    .lines()
+                    .collect::<Result<TextArea>>()?;
 
-        let mut textarea = BufReader::new(File::open(&path)?)
-            .lines()
-            .collect::<Result<TextArea>>()?;
+                if textarea.lines().iter().any(|line| line.starts_with('\t')) {
+                    textarea.set_hard_tab_indent(true);
+                }
 
-        if textarea.lines().iter().any(|line| line.starts_with('\t')) {
-            textarea.set_hard_tab_indent(true);
-        }
+                textarea
+            } else {
+                return Err(Error::new(
+                    ErrorKind::Other,
+                    format!("{:?} is not a file", path),
+                ));
+            }
+        } else {
+            TextArea::default()
+        };
 
         textarea.set_line_number_style(Style::default().fg(Color::DarkGray));
         textarea.set_cursor_line_style(Style::default());

@@ -49,7 +49,7 @@ impl<'a> App<'a> {
                 let (line, row) = self.view.cursor();
                 let lr = format!("{}:{} ", line + 1, row + 1);
 
-                let modified = if self.view.modified { "[+]" } else { "" };
+                let modified = if self.view.modified { "*" } else { "" };
                 let path = format!(" ~/{}{}", self.view.path.display(), modified);
 
                 Status::default()
@@ -76,7 +76,7 @@ impl<'a> App<'a> {
                     ..
                 } => self.view.save()?,
                 input => {
-                    self.view.modified = self.view.textarea.input(input);
+                    self.view.modified |= self.view.textarea.input(input);
                 }
             };
         }

@@ -1,0 +1,72 @@
+name: Build
+on:
+  push:
+  workflow_dispatch:
+env:
+  CARGO_TERM_COLOR: always
+jobs:
+  Linux:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        type: [debug, release]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+      - name: Compile
+        run: |
+          if [[ "${{matrix.type}}" == "debug" ]] ; then
+          cargo build
+          else
+          cargo build --${{matrix.type}}
+          fi
+      - name: Upload Artifact
+        uses: actions/upload-artifact@main
+        with:
+          name: Linux-${{matrix.type}}
+          path: target/${{matrix.type}}/lyn
+          if-no-files-found: warn
+  macOS:
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        type: [debug, release]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+      - name: Compile
+        run: |
+          if [[ "${{matrix.type}}" == "debug" ]] ; then
+          cargo build
+          else
+          cargo build --${{matrix.type}}
+          fi
+      - name: Upload Artifact
+        uses: actions/upload-artifact@main
+        with:
+          name: macOS-${{matrix.type}}
+          path: target/${{matrix.type}}/lyn
+          if-no-files-found: warn
+  Windows:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        type: [debug, release]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+      - name: Compile
+        shell: pwsh
+        run: |
+          if ("${{matrix.type}}" -eq "debug")
+          {
+          cargo build
+          } else {
+          cargo build --${{matrix.type}}
+          }
+      - name: Upload Artifact
+        uses: actions/upload-artifact@main
+        with:
+          name: Windows-${{matrix.type}}
+          path: target\${{matrix.type}}\lyn.exe
+          if-no-files-found: warn

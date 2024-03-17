@@ -6,3 +6,6 @@
 ```
 lyn <PATH>
 ```
+> [!TIP]\
+> Exit <kbd>Ctrl</kbd> + <kbd>q</kbd> or <kbd>Esc</kbd>\
+> Save <kbd>Ctrl</kbd> + <kbd>s</kbd>

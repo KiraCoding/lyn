@@ -4,6 +4,11 @@
 
 ![Editor preview](./.github/preview.gif)
 
+## Todo
+- [ ] Explorer Widget
+- [ ] Tab system
+- [ ] Plugin system (wasm)
+
 ## Usage
 ```
 lyn <PATH>
